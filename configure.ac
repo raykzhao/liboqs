@@ -178,6 +178,7 @@ SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/rand src/crypto/sha3 src/crypto/rand
 # KEX
 SRCDIR=${SRCDIR}" src/kex"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15"
+SRCDIR=${SRCDIR}" src/kex_nist_pq_algoxyz"
 
 if test x"$kex_lwe_frodo" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
@@ -278,6 +279,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_lwe_frodo/Makefile
                  src/sig/Makefile
                  src/sig_picnic/Makefile
-                 src/kex_mlwe_kyber/Makefile])
+                 src/kex_mlwe_kyber/Makefile
+                 src/kex_nist_pq_algoxyz/Makefile])
 
 AC_OUTPUT

@@ -1,0 +1,11 @@
+#ifndef NIST_API_H
+#define NIST_API_H
+
+#define CRYPTO_SECRETKEYBYTES 192
+#define CRYPTO_PUBLICKEYBYTES 64
+#define CRYPTO_BYTES 64
+#define CRYPTO_CIPHERTEXTBYTES 128
+
+#define CRYPTO_ALGNAME “UserDefinedAlgName”
+
+#endif

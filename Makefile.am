@@ -50,6 +50,7 @@ if USE_SIDH_IQC
 liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
 endif
 
+liboqs_la_LIBADD += src/kex_nist_pq_algoxyz/libnist_pq_algoxyz.la
 #liboqs_la_LIBADD += src/sig_picnic/libpicnic.la
 
 noinst_bin_PROGRAMS = test_rand test_kex test_aes
