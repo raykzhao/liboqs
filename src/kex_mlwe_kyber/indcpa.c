@@ -48,6 +48,9 @@ static void gen_matrix(polyvec *a, const unsigned char *seed, int transposed) //
 	int i, j;
 	uint16_t dsep;
 	uint64_t state[25]; // CSHAKE state
+	for (i = 0 ; i < 25; i++) {
+		state[i] = 0;
+	}
 
 	for (i = 0; i < KYBER_D; i++) {
 		for (j = 0; j < KYBER_D; j++) {
@@ -57,8 +60,8 @@ static void gen_matrix(polyvec *a, const unsigned char *seed, int transposed) //
 			else
 				dsep = i + (j << 8);
 
-			OQS_SHA3_cshake128_simple_absorb(state, dsep, seed, KYBER_SEEDBYTES);
-			OQS_SHA3_cshake128_simple_squeezeblocks(buf, nblocks, state);
+			tester_OQS_SHA3_cshake128_simple_absorb(state, dsep, seed, KYBER_SEEDBYTES);
+			tester_OQS_SHA3_cshake128_simple_squeezeblocks(buf, nblocks, state);
 
 			while (ctr < KYBER_N) {
 				val = (buf[pos] | ((uint16_t) buf[pos + 1] << 8)) & 0x1fff;
@@ -69,7 +72,7 @@ static void gen_matrix(polyvec *a, const unsigned char *seed, int transposed) //
 
 				if (pos > OQS_SHA3_SHAKE128_RATE * nblocks - 2) {
 					nblocks = 1;
-					OQS_SHA3_cshake128_simple_squeezeblocks(buf, nblocks, state);
+					tester_OQS_SHA3_cshake128_simple_squeezeblocks(buf, nblocks, state);
 					pos = 0;
 				}
 			}
@@ -86,7 +89,7 @@ static void indcpa_keypair(unsigned char *pk,
 	unsigned char nonce = 0;
 
 	rand->rand_n(rand, seed, KYBER_SEEDBYTES);
-	OQS_SHA3_shake128(seed, KYBER_SEEDBYTES, seed, KYBER_SEEDBYTES); /* Don't send output of system RNG */
+	tester_OQS_SHA3_shake128(seed, KYBER_SEEDBYTES, seed, KYBER_SEEDBYTES); /* Don't send output of system RNG */
 	rand->rand_n(rand, noiseseed, KYBER_COINBYTES);
 
 	gen_a(a, seed);

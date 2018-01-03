@@ -126,6 +126,7 @@ void OQS_RAND_urandom_chacha20_n(OQS_RAND *r, uint8_t *out, size_t n) {
 	}
 	ECRYPT_ivsetup(rand_ctx->chacha20_input, (u8 *) rand_ctx->nonce);
 	ECRYPT_keystream_bytes(rand_ctx->chacha20_input, out, n);
+	memset(out, 0, n);
 }
 
 static void OQS_RAND_urandom_chacha20_ctx_free(void *rand_ctx) {

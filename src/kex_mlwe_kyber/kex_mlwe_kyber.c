@@ -15,6 +15,8 @@
 #include <oqs/kex.h>
 #include <oqs/rand.h>
 
+#include "old_sha3.c"
+
 #include "kex_mlwe_kyber.h"
 #include "kyber.c"
 #include "params.h"

@@ -116,7 +116,7 @@ static void poly_frombytes(poly *r, const unsigned char *a) {
 static void poly_getnoise(poly *r, const unsigned char *seed, unsigned char nonce) {
 	unsigned char buf[KYBER_N];
 
-	OQS_SHA3_cshake128_simple(buf, KYBER_N, nonce, seed, KYBER_NOISESEEDBYTES);
+	tester_OQS_SHA3_cshake128_simple(buf, KYBER_N, nonce, seed, KYBER_NOISESEEDBYTES);
 
 	cbd(r, buf);
 }

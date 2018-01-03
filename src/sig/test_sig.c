@@ -1,4 +1,11 @@
 #if defined(WINDOWS)
+#define UNUSED
+// __attribute__ not supported in VS, is there something else I should define?
+#else
+#define UNUSED __attribute__((unused))
+#endif
+
+#if defined(WINDOWS)
 #pragma warning(disable : 4244 4293)
 #endif
 
@@ -178,7 +185,7 @@ cleanup:
 	return rc;
 }
 
-static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, int iterations, bool quiet) {
+UNUSED static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, int iterations, bool quiet) {
 	int ret;
 	ret = sig_test_correctness(rand, algid, !quiet);
 	if (ret != 1) {
@@ -199,7 +206,7 @@ err:
 	return ret;
 }
 
-static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int seconds) {
+UNUSED static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int seconds) {
 	int rc;
 
 	uint8_t *priv = NULL;
