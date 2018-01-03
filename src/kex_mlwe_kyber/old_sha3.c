@@ -5,6 +5,9 @@
  * from https://twitter.com/tweetfips202
  * by Gilles Van Assche, Daniel J. Bernstein, and Peter Schwabe */
 
+#define MAKE_OLD_SHA3_LIKE_CORRECT_SHA3 0
+#define USE_OLD_SHA3_FOR_KYBER 1
+
 #if defined(WINDOWS)
 #pragma warning(disable : 4244)
 #endif
@@ -338,6 +341,14 @@ static void keccak_absorb(uint64_t *s,
 	unsigned long long i;
 	unsigned char t[200];
 
+#if !MAKE_OLD_SHA3_LIKE_CORRECT_SHA3
+	// THIS SHOULD NOT BE HERE BUT IS PRESENT IN old_sha3
+	// IF IT IS ABSENT, Kyber WORKS
+	// IF IT IS PRESENT, Kyber DOESN'T WORK
+	for (i = 0; i < 25; ++i)
+		s[i] = 0;
+#endif
+
 	while (mlen >= r) {
 		for (i = 0; i < r / 8; ++i)
 			s[i] ^= load64(m + 8 * i);
@@ -376,8 +387,11 @@ void old_OQS_SHA3_sha3256(unsigned char *output, const unsigned char *input, uns
 	unsigned char t[SHA3_256_RATE];
 	int i;
 
+#if MAKE_OLD_SHA3_LIKE_CORRECT_SHA3
+	// THIS SHOULD BE HERE BUT IS NOT PRESENT IN old_sha3
 	for (i = 0; i < 25; ++i)
 		s[i] = 0;
+#endif
 
 	keccak_absorb(s, SHA3_256_RATE, input, inputByteLen, 0x06);
 	old_OQS_SHA3_keccak_squeezeblocks(t, 1, s, SHA3_256_RATE);
@@ -434,6 +448,14 @@ void old_OQS_SHA3_cshake128_simple_absorb(uint64_t s[25],
                                       uint16_t cstm, // 2-byte domain separator
                                       const unsigned char *in, unsigned long long inlen) {
 	unsigned char *sep = (unsigned char *) s;
+
+#if !MAKE_OLD_SHA3_LIKE_CORRECT_SHA3
+	// THIS SHOULD NOT BE HERE BUT IS PRESENT IN old_sha3
+	unsigned int i;
+	for (i = 0; i < 25; ++i)
+		s[i] = 0;
+#endif
+
 	/* Absorb customization (domain-separation) string */
 	sep[0] = 0x01;
 	sep[1] = 0xa8;
@@ -461,8 +483,11 @@ void old_OQS_SHA3_cshake128_simple(unsigned char *output, unsigned long long out
 	unsigned char t[SHAKE128_RATE];
 	unsigned int i;
 
-	for (i = 0; i < 25; i++)
+#if MAKE_OLD_SHA3_LIKE_CORRECT_SHA3
+	// THIS SHOULD BE HERE BUT IS NOT PRESENT IN old_sha3
+	for (i = 0; i < 25; ++i)
 		s[i] = 0;
+#endif
 
 	old_OQS_SHA3_cshake128_simple_absorb(s, cstm, in, inlen);
 
@@ -476,8 +501,6 @@ void old_OQS_SHA3_cshake128_simple(unsigned char *output, unsigned long long out
 			output[i] = t[i];
 	}
 }
-
-#define tester_USE_OLD 0
 
 #include <stdio.h>
 #define PRINT_HEX_STRING(label, str, len)                        \
@@ -496,14 +519,14 @@ void tester_OQS_SHA3_cshake128_simple(unsigned char *output, unsigned long long 
 	old_OQS_SHA3_cshake128_simple(out_old, outlen, cstm, in, inlen);
 	if (0 != memcmp(out_old, out_new, outlen)) {
 		fprintf(stderr, "Found mismatch in cshake128_simple\n");
-#if 0
+#if 1
 		PRINT_HEX_STRING("cstm", (unsigned char *) &cstm, 2)
 		PRINT_HEX_STRING("in", in, inlen)
 		PRINT_HEX_STRING("out_new", out_new, outlen)
 		PRINT_HEX_STRING("out_old", out_old, outlen)
 #endif
 	}
-	memcpy(output, tester_USE_OLD ? out_old : out_new, outlen);
+	memcpy(output, USE_OLD_SHA3_FOR_KYBER ? out_old : out_new, outlen);
 	free(out_new);
 	free(out_old);
 }
@@ -516,7 +539,7 @@ static void tester_OQS_SHA3_shake128(unsigned char *output, unsigned long long o
 	if (0 != memcmp(out_old, out_new, outlen)) {
 		fprintf(stderr, "Found mismatch in shake128\n");
 	}
-	memcpy(output, tester_USE_OLD ? out_old : out_new, outlen);
+	memcpy(output, USE_OLD_SHA3_FOR_KYBER ? out_old : out_new, outlen);
 	free(out_new);
 	free(out_old);
 }
@@ -534,7 +557,7 @@ static void tester_OQS_SHA3_sha3256(unsigned char *output, const unsigned char *
 		PRINT_HEX_STRING("out_old", out_old, 32)
 #endif
 	}
-	memcpy(output, tester_USE_OLD ? out_old : out_new, 32);
+	memcpy(output, USE_OLD_SHA3_FOR_KYBER ? out_old : out_new, 32);
 }
 
 static void tester_OQS_SHA3_cshake128_simple_absorb(uint64_t s[25], uint16_t cstm, const unsigned char *in, unsigned long long inlen) {
@@ -554,7 +577,7 @@ static void tester_OQS_SHA3_cshake128_simple_absorb(uint64_t s[25], uint16_t cst
 		PRINT_HEX_STRING("s_old", s_old, 25 * sizeof(uint64_t))
 #endif
 	}
-	memcpy(s, tester_USE_OLD ? s_old : s_new, 25 * sizeof(uint64_t));
+	memcpy(s, USE_OLD_SHA3_FOR_KYBER ? s_old : s_new, 25 * sizeof(uint64_t));
 }
 
 static void tester_OQS_SHA3_cshake128_simple_squeezeblocks(unsigned char *output, unsigned long long nblocks, uint64_t *s) {
@@ -576,8 +599,8 @@ static void tester_OQS_SHA3_cshake128_simple_squeezeblocks(unsigned char *output
 		PRINT_HEX_STRING("output_old", output_old, SHAKE128_RATE * nblocks)
 #endif
 	}
-	memcpy(s, tester_USE_OLD ? s_old : s_new, 25 * sizeof(uint64_t));
-	memcpy(output, tester_USE_OLD ? output_old : output_new, SHAKE128_RATE * nblocks);
+	memcpy(s, USE_OLD_SHA3_FOR_KYBER ? s_old : s_new, 25 * sizeof(uint64_t));
+	memcpy(output, USE_OLD_SHA3_FOR_KYBER ? output_old : output_new, SHAKE128_RATE * nblocks);
 	free(output_new);
 	free(output_old);
 }
