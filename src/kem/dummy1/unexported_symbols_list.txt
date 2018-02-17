@@ -1,4 +1,4 @@
-_crypto_kem_keypair
-_crypto_kem_enc
-_crypto_kem_dec
-_another_global_function
+another_global_function dummy1_another_global_function
+crypto_kem_dec dummy1_crypto_kem_dec
+crypto_kem_enc dummy1_crypto_kem_enc
+crypto_kem_keypair dummy1_crypto_kem_keypair

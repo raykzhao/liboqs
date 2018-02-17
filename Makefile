@@ -20,7 +20,7 @@ CLANGFORMAT=clang-format
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
 CFLAGS+=-O2 -std=c11 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
-LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto
+LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
 all: mkdirs headers liboqs tests speeds examples
 
@@ -60,10 +60,15 @@ headers: config_h $(HEADERS)
 	cp $(HEADERS) src/config.h include/oqs
 
 liboqs: mkdirs headers $(OBJECTS) $(ARCHIVES)
-	$(RM) liboqs_tmp.a liboqs.a
-	ar -r -c liboqs_tmp.a $(OBJECTS)
-	libtool -static -o liboqs.a liboqs_tmp.a $(ARCHIVES)
-	$(RM) liboqs_tmp.a
+	$(RM) liboqs.a
+	echo "CREATE liboqs.a" > script.ar
+	for a in $(ARCHIVES); do (echo "ADDLIB $$a" >> script.ar); done
+	echo "ADDMOD $(OBJECTS)" >> script.ar
+	echo "SAVE" >> script.ar
+	echo "END" >> script.ar
+	ar -M < script.ar
+	ranlib liboqs.a
+	$(RM) script.ar
 
 TEST_PROGRAMS=test_kem
 tests: $(TEST_PROGRAMS)
@@ -87,10 +92,6 @@ clean:
 	$(RM) $(TEST_PROGRAMS)
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
-
-check_namespacing: all
-	nm -g liboqs.a | grep ' T ' | grep -v ' _OQS'; test $$? -eq 1
-	nm -g liboqs.a | grep ' D ' | grep -v ' _OQS'; test $$? -eq 1
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v upstream | xargs $(CLANGFORMAT) -style=file -i

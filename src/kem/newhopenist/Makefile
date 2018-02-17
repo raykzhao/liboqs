@@ -32,10 +32,10 @@ src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/%
 $(ARCHIVES_KEM_NEWHOPENIST_512_CCA_KEM): $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
 	$(RM) $@
 	ar -r -c $@ $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
-	bash scripts/symbol_alias.sh $@ _crypto_kem_keypair _OQS_KEM_newhope_512_cca_kem_keypair
-	bash scripts/symbol_alias.sh $@ _crypto_kem_enc _OQS_KEM_newhope_512_cca_kem_encaps
-	bash scripts/symbol_alias.sh $@ _crypto_kem_dec _OQS_KEM_newhope_512_cca_kem_decaps
-	bash scripts/symbol_unexport.sh $@ src/kem/newhopenist/unexported_symbols_list.txt
+	bash scripts/symbol_unexport.sh $@ src/kem/newhopenist/unexported_symbols_list.txt newhope_512_cca_kem
+	bash scripts/symbol_alias.sh $@ newhope_512_cca_kem_crypto_kem_keypair OQS_KEM_newhope_512_cca_kem_keypair
+	bash scripts/symbol_alias.sh $@ newhope_512_cca_kem_crypto_kem_enc OQS_KEM_newhope_512_cca_kem_encaps
+	bash scripts/symbol_alias.sh $@ newhope_512_cca_kem_crypto_kem_dec OQS_KEM_newhope_512_cca_kem_decaps
 	$(RM) $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
 
 ARCHIVES_KEM_NEWHOPENIST_1024_CCA_KEM=.objs/kem/newhopenist/kem_newhopenist_1024_cca_kem_upstream.a
@@ -52,8 +52,8 @@ src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/
 $(ARCHIVES_KEM_NEWHOPENIST_1024_CCA_KEM): $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
 	$(RM) $@
 	ar -r -c $@ $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
-	bash scripts/symbol_alias.sh $@ _crypto_kem_keypair _OQS_KEM_newhope_1024_cca_kem_keypair
-	bash scripts/symbol_alias.sh $@ _crypto_kem_enc _OQS_KEM_newhope_1024_cca_kem_encaps
-	bash scripts/symbol_alias.sh $@ _crypto_kem_dec _OQS_KEM_newhope_1024_cca_kem_decaps
-	bash scripts/symbol_unexport.sh $@ src/kem/newhopenist/unexported_symbols_list.txt
+	bash scripts/symbol_unexport.sh $@ src/kem/newhopenist/unexported_symbols_list.txt newhope_1024_cca_kem
+	bash scripts/symbol_alias.sh $@ newhope_1024_cca_kem_crypto_kem_keypair OQS_KEM_newhope_1024_cca_kem_keypair
+	bash scripts/symbol_alias.sh $@ newhope_1024_cca_kem_crypto_kem_enc OQS_KEM_newhope_1024_cca_kem_encaps
+	bash scripts/symbol_alias.sh $@ newhope_1024_cca_kem_crypto_kem_dec OQS_KEM_newhope_1024_cca_kem_decaps
 	$(RM) $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
