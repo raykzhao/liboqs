@@ -20,7 +20,7 @@ CLANGFORMAT=clang-format
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
 CFLAGS+=-O2 -std=c11 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
-LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
+LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm -lkeccak
 
 all: mkdirs headers liboqs tests speeds examples
 
