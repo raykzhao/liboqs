@@ -55,6 +55,78 @@ OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name) {
 #else
 		return NULL;
 #endif
+	case OQS_KEM_alg_titanium_kmac_toy:
+#ifdef OQS_ENABLE_KEM_titanium_kmac_toy
+		return OQS_KEM_titanium_kmac_toy_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_aes_toy:
+#ifdef OQS_ENABLE_KEM_titanium_aes_toy
+		return OQS_KEM_titanium_aes_toy_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_kmac_lite:
+#ifdef OQS_ENABLE_KEM_titanium_kmac_lite
+		return OQS_KEM_titanium_kmac_lite_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_aes_lite:
+#ifdef OQS_ENABLE_KEM_titanium_aes_lite
+		return OQS_KEM_titanium_aes_lite_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_kmac_std:
+#ifdef OQS_ENABLE_KEM_titanium_kmac_std
+		return OQS_KEM_titanium_kmac_std_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_aes_std:
+#ifdef OQS_ENABLE_KEM_titanium_aes_std
+		return OQS_KEM_titanium_aes_std_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_kmac_med:
+#ifdef OQS_ENABLE_KEM_titanium_kmac_med
+		return OQS_KEM_titanium_kmac_med_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_aes_med:
+#ifdef OQS_ENABLE_KEM_titanium_aes_med
+		return OQS_KEM_titanium_aes_med_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_kmac_hi:
+#ifdef OQS_ENABLE_KEM_titanium_kmac_hi
+		return OQS_KEM_titanium_kmac_hi_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_aes_hi:
+#ifdef OQS_ENABLE_KEM_titanium_aes_hi
+		return OQS_KEM_titanium_aes_hi_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_kmac_super:
+#ifdef OQS_ENABLE_KEM_titanium_kmac_super
+		return OQS_KEM_titanium_kmac_super_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_titanium_aes_super:
+#ifdef OQS_ENABLE_KEM_titanium_aes_super
+		return OQS_KEM_titanium_aes_super_new();
+#else
+		return NULL;
+#endif
 		// EDIT-WHEN-ADDING-KEM
 	default:
 		assert(0);

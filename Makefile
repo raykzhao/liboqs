@@ -2,7 +2,8 @@
 
 KEMS_TO_ENABLE=dummy1 dummy2 \
 	frodokem_640_aes frodokem_976_aes frodokem_640_cshake frodokem_976_cshake \
-	newhope_512_cca_kem newhope_1024_cca_kem # EDIT-WHEN-ADDING-KEM
+	newhope_512_cca_kem newhope_1024_cca_kem \
+	titanium_kmac_toy titanium_aes_toy titanium_kmac_lite titanium_aes_lite titanium_kmac_std titanium_aes_std titanium_kmac_med titanium_aes_med titanium_kmac_hi titanium_aes_hi titanium_kmac_super titanium_aes_super # EDIT-WHEN-ADDING-KEM
 KEM_DEFAULT=dummy1
 
 ARCH=x64
