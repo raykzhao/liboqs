@@ -19,19 +19,24 @@
  * m = x - t * Q */
 
 #define BARRETT_BITSHIFT_4Q 21 
-#define BARRETT_FACTOR_4Q ((1 << BARRETT_BITSHIFT_4Q) / Q) 
 #define BARRETT_BITSHIFT_8Q 22 
-#define BARRETT_FACTOR_8Q ((1 << BARRETT_BITSHIFT_8Q) / Q) 
 #define BARRETT_BITSHIFT_16Q 23 
-#define BARRETT_FACTOR_16Q ((1 << BARRETT_BITSHIFT_16Q) / Q) 
 
 #define BARRETT_BITSHIFT_2Q2 39
-#define BARRETT_FACTOR_2Q2 ((1LL << BARRETT_BITSHIFT_2Q2) / Q) 
 #define BARRETT_BITSHIFT_4Q2 40 
-#define BARRETT_FACTOR_4Q2 ((1LL << BARRETT_BITSHIFT_4Q2) / Q) 
+#define BARRETT_BITSHIFT_8Q2 41 
 
 #define BARRETT_BITSHIFT_ZQ (ZQ_BYTES * 8) 
-#define BARRETT_FACTOR_ZQ ((1 << BARRETT_BITSHIFT_ZQ) / Q) 
+
+#define BARRETT_FACTOR_4Q 4
+#define BARRETT_FACTOR_8Q 8
+#define BARRETT_FACTOR_16Q 17
+
+#define BARRETT_FACTOR_2Q2 1167108
+#define BARRETT_FACTOR_4Q2 2334216
+#define BARRETT_FACTOR_8Q2 4668432
+
+#define BARRETT_FACTOR_ZQ 35
 
 inline uint32_t barrett_4q(uint32_t t)
 {
@@ -56,6 +61,11 @@ inline uint32_t barrett_2q2(uint64_t t)
 inline uint32_t barrett_4q2(uint64_t t)
 {
 	return t - (((t * BARRETT_FACTOR_4Q2) >> BARRETT_BITSHIFT_4Q2) * Q);
+}
+
+inline uint32_t barrett_8q2(uint64_t t)
+{
+	return t - (((t * BARRETT_FACTOR_8Q2) >> BARRETT_BITSHIFT_8Q2) * Q);
 }
 
 inline uint32_t barrett_zq(uint32_t t)
