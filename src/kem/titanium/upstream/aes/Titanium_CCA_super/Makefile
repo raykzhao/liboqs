@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-O3
+CFLAGS=-O3 -std=c99
 OBJS=encrypt.o fastrandombytes.o kem.o ntt.o pack.o rng.o sampler.o
 PROGRAM=libtitanium.a
 
